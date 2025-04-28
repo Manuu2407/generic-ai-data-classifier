@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../App.css";
 import { FluentSelectField } from "../components/FluentSelectField";
 import { FluentFileInputField } from "../components/FluentFileInputField";
@@ -18,7 +18,7 @@ export const DataGenForm: React.FunctionComponent = () => {
     if (uploadedFile) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        if (uploadedFile.type === "application/json" || uploadedFile.name.endsWith(".jsonl")) {
+        if (uploadedFile.type === "application/json") {
           try {
             const jsonData = JSON.parse(e.target?.result as string);
             const sampleData = Array.isArray(jsonData) ? jsonData[0] : jsonData;
@@ -38,7 +38,9 @@ export const DataGenForm: React.FunctionComponent = () => {
   };
 
   function handleFormSubmit(): any {
-    throw new Error("Function not implemented.");
+    fetch(`${process.env.REACT_APP_API_HOST_URL}/process/data`, {method: "POST"})
+      .then(response => response.json())
+      .then(data => console.log(data))
   }
 
   return (
