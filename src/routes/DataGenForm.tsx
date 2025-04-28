@@ -3,6 +3,7 @@ import "../App.css";
 import { FluentSelectField } from "../components/FluentSelectField";
 import { FluentFileInputField } from "../components/FluentFileInputField";
 import { Button } from "@fluentui/react-components";
+import { PreProcessData } from "../types/PreProcessData";
 
 export const DataGenForm: React.FunctionComponent = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -10,6 +11,8 @@ export const DataGenForm: React.FunctionComponent = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [selectedTextField, setSelectedTextField] = useState<string>("");
   const [options, setOptions] = useState<string[]>([]);
+  const [jsonData, setJsonData] = useState<string[]>([]);
+
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const uploadedFile = event.target.files?.[0] || null;
@@ -21,6 +24,7 @@ export const DataGenForm: React.FunctionComponent = () => {
         if (uploadedFile.type === "application/json") {
           try {
             const jsonData = JSON.parse(e.target?.result as string);
+            setJsonData(jsonData)
             const sampleData = Array.isArray(jsonData) ? jsonData[0] : jsonData;
             const parsedColumns = Object.keys(sampleData);
             setOptions(parsedColumns);
@@ -38,18 +42,33 @@ export const DataGenForm: React.FunctionComponent = () => {
   };
 
   function handleFormSubmit(): any {
-    fetch(`${process.env.REACT_APP_API_HOST_URL}/process/data`, {method: "POST"})
+    const preProcessData: PreProcessData[] = jsonData.map((data: any) => ({
+      custom_id: data[selectedCustomId] || undefined,
+      data_type: file?.type || "",
+      category: data[selectedCategory],
+      text: data[selectedTextField]
+    }));
+    fetch(`${process.env.REACT_APP_API_HOST_URL}/process/data`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }, 
+      method: "POST",
+      body: JSON.stringify(preProcessData)})
       .then(response => response.json())
       .then(data => console.log(data))
   }
 
   return (
-    <form className="data-gen-form">
+    <form className="data-gen-form" onSubmit={(e) => {
+      e.preventDefault();
+      handleFormSubmit();
+    }}>
       <FluentFileInputField onFileUpload={handleFileUpload} required/>
-      <FluentSelectField label={"Custom-ID"} options={options} selectedValue={selectedCustomId} onChange={(event) => setSelectedCustomId(event.target.value)} required/>
+      <FluentSelectField label={"Custom-ID"} options={options} selectedValue={selectedCustomId} onChange={(event) => setSelectedCustomId(event.target.value)}/>
       <FluentSelectField label={"Category"} options={options} selectedValue={selectedCategory} onChange={(event) => setSelectedCategory(event.target.value)} required/>
       <FluentSelectField label={"Text-Field"} options={options} selectedValue={selectedTextField} onChange={(event) => setSelectedTextField(event.target.value)} required/>
-      <Button type="submit" appearance="primary" onSubmit={handleFormSubmit}>Process Data</Button>
+      <Button type="submit" appearance="primary">Process Data</Button>
     </form>
   );
 };
