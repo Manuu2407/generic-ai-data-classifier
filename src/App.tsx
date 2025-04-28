@@ -1,7 +1,15 @@
 import React from "react";
 import { FluentProvider, webLightTheme, Text, makeStyles } from "@fluentui/react-components";
 import { DataGenForm } from "./routes/DataGenForm";
+import { DataStorage } from "./routes/DataStorage";
 import { Nav } from "@fluentui/react";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BulkDataGenForm } from "./routes/BulkDataGenForm";
+import { DataClassificationForm } from "./routes/DataClassificationForm";
+import { BulkDataClassificationForm } from "./routes/BulkDataClassificationForm";
+import { JSON_Parser } from "./routes/JSON_Parser";
+import { JSONL_Parser } from "./routes/JSONL_Parser";
+import { CSV_Parser } from "./routes/CSV_Parser";
 
 const useStyles = makeStyles({
   container: {
@@ -32,14 +40,14 @@ const useStyles = makeStyles({
 });
 
 const pages = [
-  { url: "/generator", name: "Embedding Generator", key: "embedding_generator" },
-  { url: "/bulk-generator", name: "Bulk Embedding Generator", key: "bulk_embedding_generator" },
-  { url: "/data-classification", name: "Data Classification", icon: "Data", key: "data_classification" },
-  { url: "/bulk-classification", name: "Bulk Data Classification", icon: "Bulk", key: "bulk_data_classification" },
-  { url: "/data-storage", name: "Data Storage", icon: "Database", key: "data_storage" },
-  { url: "/to-json", name: "to JSON", icon: "Data", key: "to_json" },
-  { url: "/to-jsonl", name: "to JSONL", icon: "Data", key: "to_jsonl" },
-  { url: "/to-csv", name: "to CSV", icon: "Data", key: "to_csv" },
+  { url: "/generator", name: "Embedding Generator", key: "embedding_generator", page: <DataGenForm />},
+  { url: "/bulk-generator", name: "Bulk Embedding Generator", key: "bulk_embedding_generator", page: <BulkDataGenForm /> },
+  { url: "/data-classification", name: "Data Classification", icon: "Data", key: "data_classification", page: <DataClassificationForm /> },
+  { url: "/bulk-classification", name: "Bulk Data Classification", icon: "Bulk", key: "bulk_data_classification", page: <BulkDataClassificationForm /> },
+  { url: "/data-storage", name: "Data Storage", icon: "Database", key: "data_storage", page: <DataStorage /> },
+  { url: "/to-json", name: "to JSON", icon: "Data", key: "to_json", page: <JSON_Parser /> },
+  { url: "/to-jsonl", name: "to JSONL", icon: "Data", key: "to_jsonl", page: <JSONL_Parser /> },
+  { url: "/to-csv", name: "to CSV", icon: "Data", key: "to_csv", page: <CSV_Parser /> },
 ];
 
 export const App: React.FunctionComponent = () => {
@@ -61,6 +69,7 @@ export const App: React.FunctionComponent = () => {
           </Text>
         </header>
         <div className={styles.layout}>
+        <BrowserRouter>
           <nav className={styles.nav}>
             <Nav
               groups={[
@@ -77,8 +86,19 @@ export const App: React.FunctionComponent = () => {
             />
           </nav>
           <main className={styles.content}>
-            <DataGenForm />
+          <Switch>
+          {pages.map((page) => (
+                  <Route key={page.key} path={page.url}>
+                    {page.page}
+                  </Route>
+                ))}
+                {/* Default route */}
+                <Route path="/">
+                  <DataGenForm />
+                </Route>
+          </Switch>
           </main>
+        </BrowserRouter>
         </div>
       </div>
     </FluentProvider>

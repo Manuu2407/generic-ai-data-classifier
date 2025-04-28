@@ -5,7 +5,7 @@ import { FluentFileInputField } from "../components/FluentFileInputField";
 import { Button } from "@fluentui/react-components";
 import { PreProcessData } from "../types/PreProcessData";
 
-export const DataGenForm: React.FunctionComponent = () => {
+export const DataClassificationForm: React.FunctionComponent = () => {
   const [file, setFile] = useState<File | null>(null);
   const [selectedCustomId, setSelectedCustomId] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
@@ -73,6 +73,7 @@ export const DataGenForm: React.FunctionComponent = () => {
       e.preventDefault();
       handleFormSubmit();
     }}>
+        <h2>Data Classification</h2>
       <FluentFileInputField onFileUpload={handleFileUpload} required/>
       <FluentSelectField label={"Custom-ID"} options={options} selectedValue={selectedCustomId} onChange={(event) => setSelectedCustomId(event.target.value)}/>
       <FluentSelectField label={"Category"} options={options} selectedValue={selectedCategory} onChange={(event) => setSelectedCategory(event.target.value)} required/>
