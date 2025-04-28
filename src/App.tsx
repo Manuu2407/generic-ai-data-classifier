@@ -40,11 +40,39 @@ const useStyles = makeStyles({
 });
 
 const pages = [
-  { url: "/generator", name: "Embedding Generator", key: "embedding_generator", page: <DataGenForm />},
-  { url: "/bulk-generator", name: "Bulk Embedding Generator", key: "bulk_embedding_generator", page: <BulkDataGenForm /> },
-  { url: "/data-classification", name: "Data Classification", icon: "Data", key: "data_classification", page: <DataClassificationForm /> },
-  { url: "/bulk-classification", name: "Bulk Data Classification", icon: "Bulk", key: "bulk_data_classification", page: <BulkDataClassificationForm /> },
-  { url: "/data-storage", name: "Data Storage", icon: "Database", key: "data_storage", page: <DataStorage /> },
+  {
+    url: "/generator",
+    name: "Embedding Generator",
+    key: "embedding_generator",
+    page: <DataGenForm />,
+  },
+  {
+    url: "/bulk-generator",
+    name: "Bulk Embedding Generator",
+    key: "bulk_embedding_generator",
+    page: <BulkDataGenForm />,
+  },
+  {
+    url: "/data-classification",
+    name: "Data Classification",
+    icon: "Data",
+    key: "data_classification",
+    page: <DataClassificationForm />,
+  },
+  {
+    url: "/bulk-classification",
+    name: "Bulk Data Classification",
+    icon: "Bulk",
+    key: "bulk_data_classification",
+    page: <BulkDataClassificationForm />,
+  },
+  {
+    url: "/data-storage",
+    name: "Data Storage",
+    icon: "Database",
+    key: "data_storage",
+    page: <DataStorage />,
+  },
   { url: "/to-json", name: "to JSON", icon: "Data", key: "to_json", page: <JSON_Parser /> },
   { url: "/to-jsonl", name: "to JSONL", icon: "Data", key: "to_jsonl", page: <JSONL_Parser /> },
   { url: "/to-csv", name: "to CSV", icon: "Data", key: "to_csv", page: <CSV_Parser /> },
@@ -69,25 +97,25 @@ export const App: React.FunctionComponent = () => {
           </Text>
         </header>
         <div className={styles.layout}>
-        <BrowserRouter>
-          <nav className={styles.nav}>
-            <Nav
-              groups={[
-                {
-                  links: pages.map((page) => ({
-                    url: page.url,
-                    name: page.name,
-                    key: page.key,
-                  })),
-                },
-              ]}
-              selectedKey={currentPage.toLowerCase()}
-              onLinkClick={handleNavClick}
-            />
-          </nav>
-          <main className={styles.content}>
-          <Switch>
-          {pages.map((page) => (
+          <BrowserRouter>
+            <nav className={styles.nav}>
+              <Nav
+                groups={[
+                  {
+                    links: pages.map((page) => ({
+                      url: page.url,
+                      name: page.name,
+                      key: page.key,
+                    })),
+                  },
+                ]}
+                selectedKey={currentPage.toLowerCase()}
+                onLinkClick={handleNavClick}
+              />
+            </nav>
+            <main className={styles.content}>
+              <Switch>
+                {pages.map((page) => (
                   <Route key={page.key} path={page.url}>
                     {page.page}
                   </Route>
@@ -96,9 +124,9 @@ export const App: React.FunctionComponent = () => {
                 <Route path="/">
                   <DataGenForm />
                 </Route>
-          </Switch>
-          </main>
-        </BrowserRouter>
+              </Switch>
+            </main>
+          </BrowserRouter>
         </div>
       </div>
     </FluentProvider>

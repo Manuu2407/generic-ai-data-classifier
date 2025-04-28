@@ -28,7 +28,7 @@ export const DataClassificationForm: React.FunctionComponent = () => {
         if (uploadedFile.type === "application/json") {
           try {
             const jsonData = JSON.parse(e.target?.result as string);
-            setJsonData(jsonData)
+            setJsonData(jsonData);
             const sampleData = Array.isArray(jsonData) ? jsonData[0] : jsonData;
             const parsedColumns = Object.keys(sampleData);
             setOptions(parsedColumns);
@@ -50,35 +50,58 @@ export const DataClassificationForm: React.FunctionComponent = () => {
       custom_id: data[selectedCustomId] || undefined,
       data_type: file?.type || "",
       category: data[selectedCategory],
-      text: data[selectedTextField]
+      text: data[selectedTextField],
     }));
     fetch("http://127.0.0.1:8000/process/data", {
       headers: {
         ...headers,
-        'Content-Type': 'application/json',
-      }, 
+        "Content-Type": "application/json",
+      },
       method: "POST",
-      body: JSON.stringify(preProcessData)})
-      .then((response) => { if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
+      body: JSON.stringify(preProcessData),
     })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
       .then((data) => console.log(data))
       .catch((error) => console.error("Error:", error));
   }
 
   return (
-    <form className="data-gen-form" onSubmit={(e) => {
-      e.preventDefault();
-      handleFormSubmit();
-    }}>
-        <h2>Data Classification</h2>
-      <FluentFileInputField onFileUpload={handleFileUpload} required/>
-      <FluentSelectField label={"Custom-ID"} options={options} selectedValue={selectedCustomId} onChange={(event) => setSelectedCustomId(event.target.value)}/>
-      <FluentSelectField label={"Category"} options={options} selectedValue={selectedCategory} onChange={(event) => setSelectedCategory(event.target.value)} required/>
-      <FluentSelectField label={"Text-Field"} options={options} selectedValue={selectedTextField} onChange={(event) => setSelectedTextField(event.target.value)} required/>
-      <Button type="submit" appearance="primary">Process Data</Button>
+    <form
+      className="data-gen-form"
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleFormSubmit();
+      }}>
+      <h2>Data Classification</h2>
+      <FluentFileInputField onFileUpload={handleFileUpload} required />
+      <FluentSelectField
+        label={"Custom-ID"}
+        options={options}
+        selectedValue={selectedCustomId}
+        onChange={(event) => setSelectedCustomId(event.target.value)}
+      />
+      <FluentSelectField
+        label={"Category"}
+        options={options}
+        selectedValue={selectedCategory}
+        onChange={(event) => setSelectedCategory(event.target.value)}
+        required
+      />
+      <FluentSelectField
+        label={"Text-Field"}
+        options={options}
+        selectedValue={selectedTextField}
+        onChange={(event) => setSelectedTextField(event.target.value)}
+        required
+      />
+      <Button type="submit" appearance="primary">
+        Process Data
+      </Button>
     </form>
   );
 };

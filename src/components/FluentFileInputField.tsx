@@ -1,12 +1,8 @@
 import * as React from "react";
-import {
-  makeStyles,
-  tokens,
-  useId,
-} from "@fluentui/react-components";
+import { makeStyles, tokens, useId } from "@fluentui/react-components";
 
 interface FluentFileInputFieldProps {
-  required?: boolean;  
+  required?: boolean;
   onFileUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -24,7 +20,10 @@ const useStyles = makeStyles({
   },
 });
 
-export const FluentFileInputField: React.FC<FluentFileInputFieldProps> = ({ required, onFileUpload }) => {
+export const FluentFileInputField: React.FC<FluentFileInputFieldProps> = ({
+  required,
+  onFileUpload,
+}) => {
   required = required || false;
   const styles = useStyles();
   const inputId = useId();
@@ -34,7 +33,7 @@ export const FluentFileInputField: React.FC<FluentFileInputFieldProps> = ({ requ
       <div className={styles.field}>
         <label htmlFor={inputId}>Upload File</label>
         <input
-          required       
+          required
           id={inputId}
           type="file"
           accept=".json,.jsonl,.csv"
