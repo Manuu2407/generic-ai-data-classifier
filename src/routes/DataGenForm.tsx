@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import "../App.css";
+import { FluentSelectField } from "../components/FluentSelectField";
 
 export const DataGenForm: React.FunctionComponent = () => {
   const [file, setFile] = useState<File | null>(null);
   const [columns, setColumns] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [options, setOptions] = useState<string[]>([]);
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const uploadedFile = event.target.files?.[0] || null;
     setFile(uploadedFile);
-
+  
     if (uploadedFile) {
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -36,9 +38,7 @@ export const DataGenForm: React.FunctionComponent = () => {
   };
 
   return (
-    <div className="data-gen-form">
-      <section className="form-section">
-        <div className="form-column">
+    <form className="data-gen-form">
           <label htmlFor="file-upload" className="form-label">Upload File</label>
           <input
             id="file-upload"
@@ -47,25 +47,9 @@ export const DataGenForm: React.FunctionComponent = () => {
             onChange={handleFileUpload}
             className="form-input"
           />
-        </div>
-      </section>
 
-      <section className="form-section">
-        <div className="form-column">
-          <label htmlFor="category-select" className="form-label">Select Category</label>
-          <select
-            id="category-select"
-            value={selectedCategory}
-            onChange={handleCategoryChange}
-            className="form-select"
-          >
-            <option value="">-- Select a Category --</option>
-            {columns.map((column) => (
-              <option key={column} value={column}>{column}</option>
-            ))}
-          </select>
-        </div>
-      </section>
-    </div>
+
+          <FluentSelectField options={options}/>
+    </form>
   );
 };
