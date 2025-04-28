@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import "../App.css";
 import { FluentSelectField } from "../components/FluentSelectField";
+import { FluentFileInputField } from "../components/FluentFileInputField";
 
 export const DataGenForm: React.FunctionComponent = () => {
   const [file, setFile] = useState<File | null>(null);
+  const [selectedCustomId, setSelectedCustomId] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [selectedTextField, setSelectedTextField] = useState<string>("");
   const [options, setOptions] = useState<string[]>([]);
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,14 +22,14 @@ export const DataGenForm: React.FunctionComponent = () => {
             const jsonData = JSON.parse(e.target?.result as string);
             const sampleData = Array.isArray(jsonData) ? jsonData[0] : jsonData;
             const parsedColumns = Object.keys(sampleData);
-            setOptions(parsedColumns); // Update options here
+            setOptions(parsedColumns);
           } catch (error) {
             console.error("Invalid JSON format", error);
           }
         } else if (uploadedFile.name.endsWith(".csv")) {
           const text = e.target?.result as string;
           const csvColumns = text.split("\n")[0].split(",");
-          setOptions(csvColumns); // Update options here
+          setOptions(csvColumns);
         }
       };
       reader.readAsText(uploadedFile);
@@ -36,20 +39,16 @@ export const DataGenForm: React.FunctionComponent = () => {
   const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCategory(event.target.value);
   };
+  const handleTextChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCategory(event.target.value);
+  };
 
   return (
     <form className="data-gen-form">
-      <label htmlFor="file-upload" className="form-label">
-        Upload File
-      </label>
-      <input
-        id="file-upload"
-        type="file"
-        accept=".json,.jsonl,.csv"
-        onChange={handleFileUpload}
-        className="form-input"
-      />
-      <FluentSelectField options={options} />
+      <FluentFileInputField onFileUpload={handleFileUpload}/>
+      <FluentSelectField label={"Custom-ID"} options={options} selectedValue={selectedCustomId} onChange={(event) => setSelectedCustomId(event.target.value)} />
+      <FluentSelectField label={"Category"} options={options} selectedValue={selectedCategory} onChange={(event) => setSelectedCategory(event.target.value)} />
+      <FluentSelectField label={"Text-Field"} options={options} selectedValue={selectedTextField} onChange={(event) => setSelectedTextField(event.target.value)} />
     </form>
   );
 };

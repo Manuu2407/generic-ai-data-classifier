@@ -1,16 +1,12 @@
 import * as React from "react";
 import {
   makeStyles,
-  Select,
   tokens,
   useId,
 } from "@fluentui/react-components";
 
-interface FluentSelectFieldProps {
-  label: string;  
-  options: string[];
-  selectedValue: string;
-  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+interface FluentFileInputFieldProps {
+  onFileUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const useStyles = makeStyles({
@@ -27,19 +23,20 @@ const useStyles = makeStyles({
   },
 });
 
-export const FluentSelectField: React.FC<FluentSelectFieldProps> = ({ label, options, selectedValue, onChange }) => {
+export const FluentFileInputField: React.FC<FluentFileInputFieldProps> = ({ onFileUpload }) => {
   const styles = useStyles();
-  const selectId = useId();
+  const inputId = useId();
 
   return (
     <div className={styles.base}>
       <div className={styles.field}>
-        <label htmlFor={selectId}>Select {label}</label>
-        <Select id={selectId} value={selectedValue} onChange={onChange}>
-          {options.map((option) => (
-            <option key={option} value={option}>{option}</option>
-          ))}
-        </Select>
+        <label htmlFor={inputId}>Upload File</label>
+        <input
+          id={inputId}
+          type="file"
+          accept=".json,.jsonl,.csv"
+          onChange={onFileUpload}
+        />
       </div>
     </div>
   );
