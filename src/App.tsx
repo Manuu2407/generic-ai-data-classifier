@@ -2,7 +2,7 @@ import React from 'react';
 import { ThemeProvider, Nav, createTheme } from '@fluentui/react';
 import { Text } from "@fluentui/react-components";
 import './App.css';
-import { DataGenForm } from './components/DataGenForm';
+import { DataGenForm } from './routes/DataGenForm';
 
 const appTheme = createTheme({
   palette: {
