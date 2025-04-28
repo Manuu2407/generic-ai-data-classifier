@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "../App.css";
 import { FluentSelectField } from "../components/FluentSelectField";
 import { FluentFileInputField } from "../components/FluentFileInputField";
+import { Button } from "@fluentui/react-components";
 
 export const DataGenForm: React.FunctionComponent = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -36,19 +37,17 @@ export const DataGenForm: React.FunctionComponent = () => {
     }
   };
 
-  const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedCategory(event.target.value);
-  };
-  const handleTextChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedCategory(event.target.value);
-  };
+  function handleFormSubmit(): any {
+    throw new Error("Function not implemented.");
+  }
 
   return (
     <form className="data-gen-form">
-      <FluentFileInputField onFileUpload={handleFileUpload}/>
-      <FluentSelectField label={"Custom-ID"} options={options} selectedValue={selectedCustomId} onChange={(event) => setSelectedCustomId(event.target.value)} />
-      <FluentSelectField label={"Category"} options={options} selectedValue={selectedCategory} onChange={(event) => setSelectedCategory(event.target.value)} />
-      <FluentSelectField label={"Text-Field"} options={options} selectedValue={selectedTextField} onChange={(event) => setSelectedTextField(event.target.value)} />
+      <FluentFileInputField onFileUpload={handleFileUpload} required/>
+      <FluentSelectField label={"Custom-ID"} options={options} selectedValue={selectedCustomId} onChange={(event) => setSelectedCustomId(event.target.value)} required/>
+      <FluentSelectField label={"Category"} options={options} selectedValue={selectedCategory} onChange={(event) => setSelectedCategory(event.target.value)} required/>
+      <FluentSelectField label={"Text-Field"} options={options} selectedValue={selectedTextField} onChange={(event) => setSelectedTextField(event.target.value)} required/>
+      <Button type="submit" appearance="primary" onSubmit={handleFormSubmit}>Process Data</Button>
     </form>
   );
 };
