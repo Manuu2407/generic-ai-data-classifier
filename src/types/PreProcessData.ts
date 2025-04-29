@@ -1,8 +1,11 @@
 import { UUID } from "crypto";
 
 export type PreProcessData = {
-  custom_id: string | number | UUID | undefined;
+  title: string;
   data_type: string;
-  category: string;
-  text: string;
+  body: {
+    custom_id: string | number | UUID | undefined;
+    category: string;
+    text: string;
+  };
 };
