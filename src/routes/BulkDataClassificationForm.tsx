@@ -47,10 +47,13 @@ export const BulkDataClassificationForm: React.FunctionComponent = () => {
 
   function handleFormSubmit(): any {
     const preProcessData: PreProcessData[] = jsonData.map((data: any) => ({
-      custom_id: data[selectedCustomId] || undefined,
-      data_type: file?.type || "",
-      category: data[selectedCategory],
-      text: data[selectedTextField],
+      title: "Placeholder",
+      data_type: file?.name.substring(file.name.lastIndexOf(".")) || "",
+      body: {
+        custom_id: data[selectedCustomId] || undefined,
+        category: data[selectedCategory],
+        text: data[selectedTextField],
+      },
     }));
     fetch("http://127.0.0.1:8000/process/data", {
       headers: {

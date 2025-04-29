@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "../App.css";
 import { FluentSelectField } from "../components/FluentSelectField";
 import { FluentFileInputField } from "../components/FluentFileInputField";
 import { Button } from "@fluentui/react-components";
 import { PreProcessData } from "../types/PreProcessData";
+import { FluentTextInputField } from "../components/FluentTextInputField";
 
 export const DataGenForm: React.FunctionComponent = () => {
   const [file, setFile] = useState<File | null>(null);
   const [selectedCustomId, setSelectedCustomId] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [selectedTextField, setSelectedTextField] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
   const [options, setOptions] = useState<string[]>([]);
   const [jsonData, setJsonData] = useState<string[]>([]);
 
@@ -47,10 +49,13 @@ export const DataGenForm: React.FunctionComponent = () => {
 
   function handleFormSubmit(): any {
     const preProcessData: PreProcessData[] = jsonData.map((data: any) => ({
-      custom_id: data[selectedCustomId] || undefined,
-      data_type: file?.type || "",
-      category: data[selectedCategory],
-      text: data[selectedTextField],
+      title: title,
+      data_type: file?.name.substring(file.name.lastIndexOf(".") + 1) || "",
+      body: {
+        custom_id: data[selectedCustomId] || undefined,
+        category: data[selectedCategory],
+        text: data[selectedTextField],
+      },
     }));
     fetch("http://127.0.0.1:8000/process/data", {
       headers: {
@@ -78,6 +83,11 @@ export const DataGenForm: React.FunctionComponent = () => {
         handleFormSubmit();
       }}>
       <FluentFileInputField onFileUpload={handleFileUpload} required />
+      <FluentTextInputField
+        label={"Title"}
+        inputValue={title}
+        onChange={(event) => setTitle(event.target.value)}
+      />
       <FluentSelectField
         label={"Custom-ID"}
         options={options}
