@@ -36,7 +36,11 @@ export const FluentTextInputField: React.FC<FluentTextInputFieldProps> = ({
     <div className={styles.base}>
       <div className={styles.field}>
         <label htmlFor={selectId}>{label}</label>
-        <Input id={selectId} value={inputValue} onChange={onChange} required={required}></Input>
+        <Input
+          id={selectId}
+          value={inputValue}
+          onChange={onChange}
+          required={required}></Input>
       </div>
     </div>
   );

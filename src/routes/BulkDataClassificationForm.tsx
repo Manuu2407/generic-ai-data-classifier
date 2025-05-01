@@ -81,7 +81,10 @@ export const BulkDataClassificationForm: React.FunctionComponent = () => {
         handleFormSubmit();
       }}>
       <h2>Bulk Data Classification</h2>
-      <FluentFileInputField onFileUpload={handleFileUpload} required />
+      <FluentFileInputField
+        onFileUpload={handleFileUpload}
+        required
+      />
       <FluentSelectField
         label={"Custom-ID"}
         options={options}
@@ -102,7 +105,9 @@ export const BulkDataClassificationForm: React.FunctionComponent = () => {
         onChange={(event) => setSelectedTextField(event.target.value)}
         required
       />
-      <Button type="submit" appearance="primary">
+      <Button
+        type="submit"
+        appearance="primary">
         Process Data
       </Button>
     </form>

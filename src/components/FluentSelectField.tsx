@@ -38,12 +38,20 @@ export const FluentSelectField: React.FC<FluentSelectFieldProps> = ({
     <div className={styles.base}>
       <div className={styles.field}>
         <label htmlFor={selectId}>Select {label}</label>
-        <Select id={selectId} value={selectedValue} onChange={onChange} required={required}>
-          <option value="" disabled>
+        <Select
+          id={selectId}
+          value={selectedValue}
+          onChange={onChange}
+          required={required}>
+          <option
+            value=""
+            disabled>
             Please select an option
           </option>
           {options.map((option) => (
-            <option key={option} value={option}>
+            <option
+              key={option}
+              value={option}>
               {option}
             </option>
           ))}

@@ -92,7 +92,9 @@ export const App: React.FunctionComponent = () => {
     <FluentProvider theme={webLightTheme}>
       <div className={styles.container}>
         <header className={styles.header}>
-          <Text size={600} weight="semibold">
+          <Text
+            size={600}
+            weight="semibold">
             {currentPage}
           </Text>
         </header>
@@ -116,11 +118,12 @@ export const App: React.FunctionComponent = () => {
             <main className={styles.content}>
               <Switch>
                 {pages.map((page) => (
-                  <Route key={page.key} path={page.url}>
+                  <Route
+                    key={page.key}
+                    path={page.url}>
                     {page.page}
                   </Route>
                 ))}
-                {/* Default route */}
                 <Route path="/">
                   <DataGenForm />
                 </Route>
